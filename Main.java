@@ -3,6 +3,6 @@ import src.patterns.Patterns;
 public class Main {
     public static void main(String[] args) {
         Patterns patterns = new Patterns();
-        patterns.printMergeTriangle(5);
+        patterns.adjacentNumberPyramid(4);
     }
 }

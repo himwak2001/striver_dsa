@@ -154,4 +154,42 @@ public class Patterns {
             System.out.println();
         }
     }
+
+    // method to print ones and zeros in triangle
+    public void printOnesZersTriangle(int n) {
+        int start = 1;
+        for (int i = 0; i < n; i++) {
+            if (i % 2 == 0) {
+                start = 1;
+            } else {
+                start = 0;
+            }
+            for (int j = 0; j <= i; j++) {
+                System.out.print(start + " ");
+                start = 1 - start;
+            }
+            System.out.println();
+        }
+    }
+
+    // method to print adjacent number pyramid
+    public void adjacentNumberPyramid(int n) {
+        for (int i = 1; i <= n; i++) {
+            // number
+            for (int j = 1; j <= i; j++) {
+                System.out.print(j + " ");
+            }
+
+            // space
+            for (int j = 1; j <= 2 * n - 2 * i; j++) {
+                System.out.print("  ");
+            }
+
+            // number
+            for (int j = i; j >= 1; j--) {
+                System.out.print(j + " ");
+            }
+            System.out.println();
+        }
+    }
 }
