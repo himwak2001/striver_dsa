@@ -192,4 +192,110 @@ public class Patterns {
             System.out.println();
         }
     }
+
+    // method to print triangle with incremented number
+    public void printTriangleWithIncrementedNumber(int n) {
+        int num = 1;
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j <= i; j++) {
+                System.out.print(num++ + " ");
+            }
+            System.out.println();
+        }
+    }
+
+    // method to print alphabets in triangular form, wrt j
+    public void printAlphabetTriagulary(int n) {
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j <= i; j++) {
+                System.out.print((char) ('A' + j) + " ");
+            }
+            System.out.println();
+        }
+    }
+
+    // method to print the inverse alphabets triangle, wrt j
+    public void printInverseAplhabetTriangle(int n) {
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < n - i; j++) {
+                System.out.print((char) ('A' + j) + " ");
+            }
+            System.out.println();
+        }
+    }
+
+    // method to print alphabet pyramid
+    public void printAplhabetPyramid(int n) {
+        for (int i = 0; i < n; i++) {
+            // space
+            for (int j = 0; j < n - (i + 1); j++) {
+                System.out.print("  ");
+            }
+
+            // alpha
+            char ch = 'A';
+            int ta = 2 * i + 1;
+            for (int j = 0; j < ta; j++) {
+                if (j < ta / 2)
+                    System.out.print(ch++ + " ");
+                else
+                    System.out.print(ch-- + " ");
+            }
+
+            // space
+            for (int j = 0; j < n - (i + 1); j++) {
+                System.out.print("  ");
+            }
+            System.out.println();
+        }
+    }
+
+    // method to print alphabet in reverse order wrt total input
+    public void printAlphabetReverse(int n) {
+        for (int i = 0; i < n; i++) {
+            char ch = 'A';
+            for (int j = n - i - 1; j < n; j++) {
+                System.out.print((char) (ch + j) + " ");
+            }
+            System.out.println();
+        }
+    }
+
+    // method to print hollow pyramid
+    public void hollowPyramid(int n) {
+        for (int i = 0; i < n; i++) {
+            // stars
+            for (int j = 0; j < n - i; j++) {
+                System.out.print("* ");
+            }
+
+            // spaces
+            for (int j = 0; j < 2 * i; j++) {
+                System.out.print("  ");
+            }
+
+            // starts
+            for (int j = 0; j < n - i; j++) {
+                System.out.print("* ");
+            }
+            System.out.println();
+        }
+        for (int i = 0; i < n; i++) {
+            // stars
+            for (int j = 0; j <= i; j++) {
+                System.out.print("* ");
+            }
+
+            // spaces
+            for (int j = 2 * n - 2 * (i + 1); j > 0; j--) {
+                System.out.print("  ");
+            }
+
+            // starts
+            for (int j = 0; j <= i; j++) {
+                System.out.print("* ");
+            }
+            System.out.println();
+        }
+    }
 }
