@@ -1,7 +1,9 @@
 package src.arrays;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
+import static java.util.Collections.max;
 import static java.util.Collections.swap;
 
 public class Solution {
@@ -179,5 +181,132 @@ public class Solution {
             }
         }
         return result;
+    }
+
+    /**
+     * method to find missing element in an array
+     */
+    public int missingElement(int[] arr, int N) {
+        int xor1 = 0;
+        int xor2 = 0;
+        for (int i = 0; i < N - 1; i++) {
+            xor1 = xor1 ^ (i + 1);
+            xor2 = xor2 ^ arr[i];
+        }
+        xor1 = xor1 ^ N;
+        return xor1 ^ xor2;
+    }
+
+    /**
+     * method to find maximum consecutive ones in an array
+     */
+    public int maximumConsecutive(int[] arr) {
+        int maxCount = 0;
+        int count = 0;
+        for (int i = 0; i < arr.length; i++) {
+            if (arr[i] == 1) {
+                count++;
+                maxCount = Math.max(count, maxCount);
+            } else {
+                count = 0;
+            }
+        }
+        return maxCount;
+    }
+
+    /**
+     * method to find the number that appears once and other twice
+     */
+    public int numberAppears(int[] arr) {
+        int xor = 0;
+        for (int i = 0; i < arr.length; i++) {
+            xor = xor ^ arr[i];
+        }
+        return xor;
+    }
+
+    /**
+     * method to find longest sub-array with sum k (positive + negative)
+     */
+    public int longestSubArrayPosNeg(int[] arr, int k) {
+        HashMap<Long, Integer> prefixSum = new HashMap<>();
+        long sum = 0;
+        int maxLen = 0;
+        for (int i = 0; i < arr.length; i++) {
+            sum += arr[i];
+            if (sum == k) {
+                maxLen = Math.max(i + 1, maxLen);
+            }
+            long more = sum - k;
+            if (prefixSum.containsKey(more)) {
+                int len = i - prefixSum.get(more);
+                maxLen = Math.max(maxLen, len);
+            }
+
+            if (!prefixSum.containsKey(sum)) {
+                prefixSum.put(sum, i);
+            }
+        }
+        return maxLen;
+    }
+
+    /**
+     * method to find longest sub-array with sum k (positive only)
+     */
+    public int longestSubArray(int[] arr, int k) {
+        int left = 0;
+        int right = 0;
+        int n = arr.length;
+        long sum = arr[0];
+        int maxLen = 0;
+        while (right < n) {
+            if (left <= right && sum > k) {
+                sum -= arr[left];
+                left++;
+            }
+
+            if (sum == k) {
+                maxLen = Math.max(maxLen, right - left + 1);
+            }
+
+            right++;
+            if (right < n) sum += arr[right];
+        }
+        return maxLen;
+    }
+
+    /**
+     * method to find two sum
+     */
+    public boolean twoSum(int[] arr, int k) {
+        int left = 0;
+        int right = arr.length - 1;
+        while (left < right) {
+            int sum = arr[left] + arr[right];
+            if (sum > k) right--;
+            else if (sum < k) left++;
+            else return true;
+        }
+        return false;
+    }
+
+    /**
+     * method to sort an array of 0's, 1's and 2's
+     */
+    public void sortArray(int[] arr) {
+        int low = 0;
+        int mid = 0;
+        int high = arr.length - 1;
+        while (mid <= high) {
+            if (arr[mid] == 0) {
+                swap(arr, mid, low);
+                mid++;
+                low++;
+            } else if (arr[mid] == 1) mid++;
+            else {
+                swap(arr, mid, high);
+                high--;
+            }
+        }
     }
 }
