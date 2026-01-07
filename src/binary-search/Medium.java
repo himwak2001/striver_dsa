@@ -1,8 +1,8 @@
 public class Medium{
-    /**
+    /*
      * method to find the peak element
-     * TC - O()
-     * SC - O()
+     * TC - O(logn)
+     * SC - O(1)
      */
     public int findPeakElement(int[] nums) {
         int n = nums.length;
@@ -20,7 +20,7 @@ public class Medium{
     }
 
 
-    /**
+    /*
      * main method to get the output
      */
     public static void main(String[] args) {
