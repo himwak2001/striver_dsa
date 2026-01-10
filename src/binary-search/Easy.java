@@ -4,7 +4,7 @@ public class Easy {
      * TC - O(logn)
      * SC - O(1)
      */
-    private int lowerBound(int[] arr, int target){
+    public int lowerBound(int[] arr, int target){
         int n = arr.length;
         int low = 0, high = n-1;
         int ans = n;
@@ -24,7 +24,7 @@ public class Easy {
      * TC - O(logn)
      * SC - O(1)
      */
-    private int upperBound(int[] arr, int target){
+    public int upperBound(int[] arr, int target){
         int n = arr.length;
         int low = 0, high = n-1;
         int ans = n;
@@ -45,7 +45,7 @@ public class Easy {
      * TC - O(logn)
      * SC - O(1)
      */
-    private int floorSqrt(int n) {
+    public int floorSqrt(int n) {
         int low = 1, high = n, ans = 1;
         while(low <= high){
             int mid = (low + high) / 2;
