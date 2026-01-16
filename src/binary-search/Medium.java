@@ -105,6 +105,46 @@ public class Medium {
         return -1;
     }
 
+    /**
+     * method to check whether target is present in rotated sorted array containing
+     * duplicate elements
+     * TC - O(logn)
+     * SC - O(1)
+     */
+    public boolean searchDuplicates(int[] nums, int target) {
+        int n = nums.length;
+        int low = 0, high = n - 1;
+        while (low <= high) {
+            int mid = (low + high) / 2;
+
+            // 1. Check target first (Fastest exit)
+            if (nums[mid] == target)
+                return true;
+
+            // 2. Handle Ambiguity (The Duplicate Trap)
+            if (nums[low] == nums[mid] && nums[mid] == nums[high]) {
+                low++;
+                high--;
+                continue;
+            }
+
+            if (nums[low] <= nums[mid]) {
+                if (nums[low] <= target && target <= nums[mid]) {
+                    high = mid - 1;
+                } else {
+                    low = mid + 1;
+                }
+            } else {
+                if (nums[mid] <= target && target <= nums[high]) {
+                    low = mid + 1;
+                } else {
+                    high = mid - 1;
+                }
+            }
+        }
+        return false;
+    }
+
     /*
      * method to minimum integer k such that Koko can eat all the bananas within h
      * hours.
@@ -337,11 +377,12 @@ public class Medium {
      */
     public static void main(String[] args) {
         Medium medium = new Medium();
-        int[] nums = { 4, 5, 6, 7, 0, 1, 2 };
-        System.out.println(medium.search(nums, 3));
+        int[] nums = { 2, 5, 6, 0, 0, 1, 2 };
+        // System.out.println(medium.search(nums, 3));
         // int[] output = medium.searchRange(nums, 6);
         // for (int num : output) {
         // System.out.println(num);
         // }
+        System.out.println(medium.searchDuplicates(nums, 3));
     }
 }
