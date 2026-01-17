@@ -1,3 +1,5 @@
+package src.binary_search;
+
 import java.util.Arrays;
 
 public class Medium {
@@ -43,9 +45,9 @@ public class Medium {
     public int[] searchRange(int[] nums, int target) {
         int first = firstOccurence(nums, target);
         if (first == -1)
-            return new int[] { -1, -1 };
+            return new int[]{-1, -1};
         int last = lastOccurence(nums, target);
-        return new int[] { first, last };
+        return new int[]{first, last};
     }
 
     /*
@@ -145,7 +147,7 @@ public class Medium {
         return false;
     }
 
-    /*
+    /**
      * method to minimum integer k such that Koko can eat all the bananas within h
      * hours.
      * TC - O(logn) * O(n)
@@ -235,7 +237,7 @@ public class Medium {
         int sum = 0;
         for (int i = 0; i < arr.length; i++) {
             sum += Math.ceil((double) arr[i] / (double) d); // Ceiling division: Any remainder increments the result by
-                                                            // 1 for that element
+            // 1 for that element
         }
         return sum;
     }
@@ -243,7 +245,7 @@ public class Medium {
     public int smallestDivisor(int[] nums, int threshold) {
         int low = 1; // Smallest possible divisor is 1
         int high = Arrays.stream(nums).max().getAsInt(); // Largest useful divisor is the max element; any larger
-                                                         // divisor results in the same sum (1 per element)
+        // divisor results in the same sum (1 per element)
         int ans = -1;
         while (low <= high) {
             int mid = (low + high) / 2;
@@ -372,17 +374,113 @@ public class Medium {
         return ans;
     }
 
+    /**
+     * method to solve allocate minimum books
+     * TC - O(n * log(sum - max))
+     * SC - O(1)
+     */
+    private int isPossible(int[] nums, int limit) {
+        int students = 1, noOfPages = 0;
+        for (int i = 0; i < nums.length; i++) {
+            if (noOfPages + nums[i] <= limit) {
+                noOfPages += nums[i];
+            } else {
+                students += 1;
+                noOfPages = nums[i];
+            }
+        }
+        return students;
+    }
+
+    public int findPages(int[] nums, int k) {
+        // code here
+        int low = Arrays.stream(nums).max().getAsInt();
+        int high = Arrays.stream(nums).sum();
+        int ans = 0;
+        while (low <= high) {
+            int mid = (low + high) / 2;
+            int students = isPossible(nums, mid);
+            if (students <= k) {
+                ans = mid;
+                high = mid - 1;
+            } else {
+                low = mid + 1;
+            }
+        }
+        return ans;
+    }
+
+    /**
+     * method to find row with max 1's
+     * TC - O(n*logm)
+     * SC - O(1)
+     */
+    private int countOnes(int[] nums) {
+        int m = nums.length;
+        int low = 0, high = m - 1;
+        while (low <= high) {
+            int mid = (low + high) / 2;
+            if (nums[mid] == 1) {
+                high = mid - 1;
+            } else {
+                low = mid + 1;
+            }
+        }
+        return m - low;
+    }
+
+    public int rowWithMax1s(int arr[][]) {
+        // code here
+        int n = arr.length;
+        int index = -1, maxCount = Integer.MIN_VALUE;
+        for (int i = 0; i < n; i++) {
+            int count = countOnes(arr[i]);
+            if (count > maxCount) {
+                index = i;
+                maxCount = count;
+            }
+        }
+        return index;
+    }
+
+    /**
+     * method to search an element in a 2D matrix - I
+     * TC - O(log(n*m))
+     * SC - O(1)
+     */
+    public boolean searchMatrix(int[][] matrix, int target) {
+        int n = matrix.length;
+        int m = matrix[0].length;
+        int low = 0, high = n * m - 1;
+        while (low <= high) {
+            int mid = (low + high) / 2;
+            int row = mid / m;
+            int col = mid % m;
+            if (matrix[row][col] == target) {
+                return true;
+            } else if (matrix[row][col] < target) {
+                low = mid + 1;
+            } else {
+                high = mid - 1;
+            }
+        }
+        return false;
+    }
+
+
     /*
      * main method to get the output
      */
     public static void main(String[] args) {
         Medium medium = new Medium();
-        int[] nums = { 2, 5, 6, 0, 0, 1, 2 };
+//        int[] nums = {12, 34, 67, 90};
+        int[][] nums = {{1, 3, 5, 7}, {10, 11, 16, 20}, {23, 30, 34, 60}};
         // System.out.println(medium.search(nums, 3));
         // int[] output = medium.searchRange(nums, 6);
         // for (int num : output) {
         // System.out.println(num);
         // }
-        System.out.println(medium.searchDuplicates(nums, 3));
+//        System.out.println(medium.findPages(nums, 2));
+        System.out.println(medium.searchMatrix(nums, 4));
     }
 }

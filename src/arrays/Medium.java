@@ -1,3 +1,5 @@
+package src.arrays;
+
 import java.util.*;
 
 public class Medium {
