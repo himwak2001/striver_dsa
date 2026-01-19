@@ -45,9 +45,9 @@ public class Medium {
     public int[] searchRange(int[] nums, int target) {
         int first = firstOccurence(nums, target);
         if (first == -1)
-            return new int[]{-1, -1};
+            return new int[] { -1, -1 };
         int last = lastOccurence(nums, target);
-        return new int[]{first, last};
+        return new int[] { first, last };
     }
 
     /*
@@ -145,6 +145,27 @@ public class Medium {
             }
         }
         return false;
+    }
+
+    /**
+     * method to find minimum in a Rotated Sorted Array
+     * TC - O(logn)
+     * SC - O(1)
+     */
+    public int findMin(int[] nums) {
+        int n = nums.length;
+        int low = 0, high = n - 1, ans = Integer.MAX_VALUE;
+        while (low <= high) {
+            int mid = (low + high) / 2;
+            if (nums[low] <= nums[mid]) {
+                ans = Math.min(ans, nums[low]);
+                low = mid + 1;
+            } else {
+                ans = Math.min(ans, nums[mid]);
+                high = mid - 1;
+            }
+        }
+        return ans;
     }
 
     /**
@@ -467,20 +488,20 @@ public class Medium {
         return false;
     }
 
-
     /*
      * main method to get the output
      */
     public static void main(String[] args) {
         Medium medium = new Medium();
-//        int[] nums = {12, 34, 67, 90};
-        int[][] nums = {{1, 3, 5, 7}, {10, 11, 16, 20}, {23, 30, 34, 60}};
+        int[] nums = { 4, 5, 6, 7, 0, 1, 2 };
+        // int[][] nums = {{1, 3, 5, 7}, {10, 11, 16, 20}, {23, 30, 34, 60}};
         // System.out.println(medium.search(nums, 3));
         // int[] output = medium.searchRange(nums, 6);
         // for (int num : output) {
         // System.out.println(num);
         // }
-//        System.out.println(medium.findPages(nums, 2));
-        System.out.println(medium.searchMatrix(nums, 4));
+        System.out.println(medium.findMin(nums));
+        // System.out.println(medium.findPages(nums, 2));
+        // System.out.println(medium.searchMatrix(nums, 4));
     }
 }
