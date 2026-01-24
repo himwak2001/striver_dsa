@@ -84,60 +84,6 @@ public class Medium {
         return ans;
     }
 
-
-    /**
-     * method to find the longest subarray sum containing both positive and negative elements
-     * TC - O(n)
-     * SC - O(n)
-     */
-    public int longestSubarray(int[] arr, int k) {
-        // code here
-        int sum = 0, cnt = 0;
-        int n = arr.length;
-        HashMap<Integer, Integer> prefixSum = new HashMap<>();
-        prefixSum.put(0, -1);
-        for (int i = 0; i < n; i++) {
-            sum += arr[i];
-            int x = sum - k;
-
-            // check whether x present in map
-            if (prefixSum.containsKey(x)) {
-                int len = i - prefixSum.get(x);
-                cnt = Math.max(cnt, len);
-            }
-
-            // store sum in a map if not present
-            if (!prefixSum.containsKey(sum)) {
-                prefixSum.put(sum, i);
-            }
-        }
-        return cnt;
-    }
-
-
-    /**
-     * method to find the longest subarray sum containing only positive elements
-     * TC - O(n)
-     * SC - O(1)
-     */
-    public int longestSubarrayWithSumK(int[] arr, long k) {
-        int sum = 0, i = 0, maxLen = 0;
-        for (int j = 0; j < arr.length; j++) {
-            sum += arr[j];
-
-            while (i <= j && sum > k) {
-                sum -= arr[i];
-                i++;
-            }
-
-            if (sum == k) {
-                maxLen = Math.max(j - i + 1, maxLen);
-            }
-        }
-        return maxLen;
-    }
-
-
     public static void main(String[] args) {
         Medium medium = new Medium();
         int[] arr = { -3, -2, -1, 0, 1, 2, 2 };
