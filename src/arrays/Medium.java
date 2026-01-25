@@ -84,16 +84,133 @@ public class Medium {
         return ans;
     }
 
+    /**
+     * method to sort arrays of 0s, 1s and 2s (Dutch National Flag algorithm)
+     * TC - O(n)
+     * SC - O(1)
+     */
+    public void sort012(int[] arr) {
+        int n = arr.length;
+        int low = 0, mid = 0, high = n - 1;
+        while (mid <= high) {
+            if (arr[mid] == 0) {
+                swap(arr, low, mid);
+                low++;
+                mid++;
+            } else if (arr[mid] == 2) {
+                swap(arr, mid, high);
+                high--;
+            } else {
+                mid++;
+            }
+        }
+    }
+
+    /**
+     * find maximum subarray sum
+     * TC - O()
+     * SC - O()
+     */
+    public int maxSubArray(int[] nums) {
+        int sum = 0, maxi = Integer.MIN_VALUE;
+        for (int i = 0; i < nums.length; i++) {
+            sum += nums[i];
+
+            if (sum > maxi) {
+                maxi = sum;
+            }
+
+            if (sum < 0) sum = 0;
+        }
+        return maxi;
+    }
+
+    /**
+     * method to re-arrange array elements by sign
+     * TC - O(n)
+     * SC - O(n)
+     */
+    public int[] rearrangeArray(int[] nums) {
+        int[] ans = new int[nums.length];
+        int posIndex = 0, negIndex = 1;
+        for (int i = 0; i < nums.length; i++) {
+            if (nums[i] >= 0) {
+                ans[posIndex] = nums[i];
+                posIndex += 2;
+            } else {
+                ans[negIndex] = nums[i];
+                negIndex += 2;
+            }
+        }
+        return ans;
+    }
+
+    /**
+     * method to find longest consecutive sequence
+     * TC - O(n)
+     * SC - O(n)
+     */
+    public int longestConsecutive(int[] nums) {
+        HashSet<Integer> temp = new HashSet<>();
+        for (int num : nums) {
+            temp.add(num);
+        }
+
+        int maxLen = 0;
+
+        for (int num : temp) {
+            int currentNum = num;
+            if (temp.contains(currentNum - 1)) {
+                continue;
+            }
+
+            int len = 1;
+            while (temp.contains(currentNum + 1)) {
+                len += 1;
+                currentNum = currentNum + 1;
+            }
+
+            maxLen = Math.max(len, maxLen);
+        }
+        return maxLen;
+    }
+
+    /**
+     * method to find sub-array sum equals k
+     * TC - O(n)
+     * SC - O(n)
+     */
+    public int subarraySum(int[] nums, int k) {
+        HashMap<Integer, Integer> prefixSum = new HashMap<>();
+        int cnt = 0, sum = 0;
+        prefixSum.put(0, 1);
+        for (int num : nums) {
+            sum += num;
+            int x = sum - k;
+
+            if (prefixSum.containsKey(x)) {
+                cnt += prefixSum.get(x);
+            }
+
+            prefixSum.put(sum, prefixSum.getOrDefault(sum, 0) + 1);
+        }
+        return cnt;
+    }
+
     public static void main(String[] args) {
         Medium medium = new Medium();
-        int[] arr = { -3, -2, -1, 0, 1, 2, 2 };
+        int[] nums = {1, 2, 3, -3, 1, 1, 1, 4, 2, -3};
+//        System.out.println(medium.maxSubArray(nums));
         // medium.nextPermutation(nums);
-        // for (int num : nums) {
-        // System.out.print(num + " ");
-        // }
-        List<List<Integer>> output = medium.threeSum(arr);
-        for (List<Integer> triplet : output) {
-            System.out.println(triplet);
-        }
+//        medium.sort012(nums);
+//        for (int num : medium.rearrangeArray(nums)) {
+//            System.out.print(num + " ");
+//        }
+//        System.out.println(medium.longestConsecutive(nums));
+        System.out.println(medium.subarraySum(nums, 3));
+//        List<List<Integer>> output = medium.threeSum(arr);
+//        for (List<Integer> triplet : output) {
+//            System.out.println(triplet);
+//        }
     }
 }
