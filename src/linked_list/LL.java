@@ -48,17 +48,40 @@ public class LL {
      * method to delete the head of the LinkedList
      * 
      */
-    public static Node removeHead(Node head){
-        if(head == null) return head;
+    public static Node removeHead(Node head) {
+        if (head == null)
+            return head;
         head = head.next;
         return head;
     }
 
+    /**
+     * method to arrange linkedlist in odd & even
+     * TC - O(n)
+     * SC - O(1)
+     */
+    public static Node segregateEvenOdd(Node head) {
+        if (head == null || head.next == null) {
+            return head;
+        }
+
+        Node odd = head, even = head.next, evenHead = head.next;
+        while (even != null && even.next != null) {
+            odd.next = even.next;
+            odd = even.next;
+
+            even.next = odd.next;
+            even = odd.next;
+        }
+        odd.next = evenHead;
+        return head;
+    }
+
     public static void main(String[] args) {
-        int[] arr = { 2, 1, 4, 8 };
+        int[] arr = { 1, 3, 4, 2, 5, 6 };
         Node ans = convertArray2LL(arr);
-        Node rmHead = removeHead(ans);
-        traverseLL(rmHead);
+        Node head = segregateEvenOdd(ans);
+        traverseLL(head);
         // System.out.println(llLength(ans));
     }
 }
