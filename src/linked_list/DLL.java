@@ -245,9 +245,37 @@ public class DLL {
         temp.prev = newNode;
     }
 
+
+    /**
+     * Reverses a doubly linked list by swapping the previous and next pointers of each node.
+     * 
+     * @param head the head node of the doubly linked list to be reversed
+     * @return the new head node of the reversed doubly linked list, or null if the input list is empty
+     * 
+     * @throws NullPointerException if head is null (handled gracefully by returning null)
+     * 
+     * @implNote This method reverses the list in-place by iterating through each node and swapping
+     *           its prev and next pointers. The time complexity is O(n) where n is the number of nodes,
+     *           and the space complexity is O(1) as only a constant amount of extra space is used.
+     */
+    public static Node reverseDll(Node head) {
+        if(head == null || head.next == null) return head;
+        Node last = null, current = head;
+        while(current != null){
+            last = current.prev;
+            current.prev = current.next;
+            current.next = last;
+            current = current.prev;
+        }
+        head = last.prev;
+        return head;
+    }
+
     public static void main(String[] args) {
         int[] arr = { 2, 1, 3, 4 };
         DLL.Node head = DLL.convertArray2Dll(arr);
+        DLL.traverseDLL(head);
+        System.out.println();
         // head = deleteHead(head);
         // head = deleteTail(head);
         // head = deleteKthNode(head, 4);
@@ -255,7 +283,8 @@ public class DLL {
         // head = insertBeforeHead(head, 10);
         // head = insertBeforeTail(head, 5);
         // head = insertBeforeKthNode(head, 9, 3);
-        insertBeforeNode(head.next, 10);
+        // insertBeforeNode(head.next, 10);
+        head = DLL.reverseDll(head);
         DLL.traverseDLL(head);
     }
 }
