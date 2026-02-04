@@ -92,14 +92,17 @@ public class LL {
     }
 
     /**
-     * Adds two numbers represented as linked lists and returns their sum as a linked list.
+     * Adds two numbers represented as linked lists and returns their sum as a
+     * linked list.
      * 
-     * Each node in the input linked lists contains a single digit, and the digits are stored
+     * Each node in the input linked lists contains a single digit, and the digits
+     * are stored
      * in reverse order. For example, the number 342 is represented as 2 -> 4 -> 3.
      * 
      * @param l1 the first linked list representing a number in reverse order
      * @param l2 the second linked list representing a number in reverse order
-     * @return a new linked list representing the sum of the two input numbers in reverse order
+     * @return a new linked list representing the sum of the two input numbers in
+     *         reverse order
      * 
      * @time O(max(m, n)) , where m and n are the lengths of l1 and l2 respectively
      * @space O(max(m, n)) for the result linked list
@@ -129,12 +132,47 @@ public class LL {
         return dummyNode.next;
     }
 
+    /**
+     * Segregates a linked list containing nodes with values 0, 1, and 2 into three groups.
+     * Rearranges the list so that all nodes with value 0 come first, followed by nodes with value 1,
+     * and finally nodes with value 2, while maintaining the relative order within each group.
+     *
+     * @param head the head node of the linked list to be segregated
+     * @return the head node of the segregated linked list
+     *
+     * Time Complexity: O(n) where n is the number of nodes in the linked list
+     * Space Complexity: O(1) excluding the input list
+     */
+    public static Node segregate(Node head) {
+        Node zeroHead = new Node(-1);
+        Node oneHead = new Node(-1);
+        Node twoHead = new Node(-1);
+        Node temp = head, zero = zeroHead, one = oneHead, two = twoHead;
+        while (temp != null) {
+            if (temp.data == 0) {
+                zero.next = temp;
+                zero = zero.next;
+            } else if (temp.data == 1) {
+                one.next = temp;
+                one = one.next;
+            } else {
+                two.next = temp;
+                two = two.next;
+            }
+            temp = temp.next;
+        }
+        zero.next = oneHead.next == null ? twoHead.next : oneHead.next;
+        one.next = twoHead.next;
+        two.next = null;
+        return zeroHead.next;
+    }
+
     public static void main(String[] args) {
-        int[] arr1 = { 3, 5 };
-        int[] arr2 = {4, 5, 9, 9};
+        int[] arr1 = { 1, 2, 2, 1, 2, 0, 2, 2 };
+        // int[] arr2 = { 4, 5, 9, 9 };
         Node head1 = convertArray2LL(arr1);
-        Node head2 = convertArray2LL(arr2);
-        Node ans = addTwoNumbers(head1, head2);
+        // Node head2 = convertArray2LL(arr2);
+        Node ans = segregate(head1);
         // Node head = segregateEvenOdd(ans);
 
         traverseLL(ans);
