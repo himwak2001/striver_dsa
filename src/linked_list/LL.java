@@ -133,15 +133,19 @@ public class LL {
     }
 
     /**
-     * Segregates a linked list containing nodes with values 0, 1, and 2 into three groups.
-     * Rearranges the list so that all nodes with value 0 come first, followed by nodes with value 1,
-     * and finally nodes with value 2, while maintaining the relative order within each group.
+     * Segregates a linked list containing nodes with values 0, 1, and 2 into three
+     * groups.
+     * Rearranges the list so that all nodes with value 0 come first, followed by
+     * nodes with value 1,
+     * and finally nodes with value 2, while maintaining the relative order within
+     * each group.
      *
      * @param head the head node of the linked list to be segregated
      * @return the head node of the segregated linked list
      *
-     * Time Complexity: O(n) where n is the number of nodes in the linked list
-     * Space Complexity: O(1) excluding the input list
+     *         Time Complexity: O(n) where n is the number of nodes in the linked
+     *         list
+     *         Space Complexity: O(1) excluding the input list
      */
     public static Node segregate(Node head) {
         Node zeroHead = new Node(-1);
@@ -167,14 +171,45 @@ public class LL {
         return zeroHead.next;
     }
 
-    public static void main(String[] args) {
-        int[] arr1 = { 1, 2, 2, 1, 2, 0, 2, 2 };
-        // int[] arr2 = { 4, 5, 9, 9 };
-        Node head1 = convertArray2LL(arr1);
-        // Node head2 = convertArray2LL(arr2);
-        Node ans = segregate(head1);
-        // Node head = segregateEvenOdd(ans);
+    /**
+     * Removes the nth node from the end of a linked list and returns the head of the modified list.
+     * 
+     * This method uses the two-pointer (fast and slow) approach to efficiently find and remove
+     * the target node in a single pass through the list.
+     * 
+     * @param head the head node of the linked list
+     * @param n the position from the end of the list (1-indexed) of the node to be removed
+     * @return the head node of the linked list after removing the nth node from the end.
+     *         If the head node itself is removed, returns the next node; otherwise returns the original head.
+     * 
+     * Time Complexity: O(L) where L is the length of the linked list
+     * Space Complexity: O(1) - only using pointers, no extra space
+     */
+    public static Node removeNthFromEnd(Node head, int n) {
+        Node slow = head, fast = head, prev = null;
+        for (int i = 0; i < n; i++) {
+            fast = fast.next;
+        }
+        if (fast == null)
+            return head.next;
 
+        while (fast != null) {
+            prev = slow;
+            slow = slow.next;
+            fast = fast.next;
+        }
+        prev.next = slow.next;
+        return head;
+    }
+
+    public static void main(String[] args) {
+        int[] arr = { 1, 2, 3, 4, 5 };
+        // int[] arr2 = { 4, 5, 9, 9 };
+        Node head = convertArray2LL(arr);
+        // Node head2 = convertArray2LL(arr2);
+        // Node ans = segregate(head1);
+        // Node head = segregateEvenOdd(ans);
+        Node ans = removeNthFromEnd(head, 2);
         traverseLL(ans);
         // System.out.println(llLength(ans));
     }
