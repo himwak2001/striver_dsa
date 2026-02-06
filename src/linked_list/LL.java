@@ -172,18 +172,23 @@ public class LL {
     }
 
     /**
-     * Removes the nth node from the end of a linked list and returns the head of the modified list.
+     * Removes the nth node from the end of a linked list and returns the head of
+     * the modified list.
      * 
-     * This method uses the two-pointer (fast and slow) approach to efficiently find and remove
+     * This method uses the two-pointer (fast and slow) approach to efficiently find
+     * and remove
      * the target node in a single pass through the list.
      * 
      * @param head the head node of the linked list
-     * @param n the position from the end of the list (1-indexed) of the node to be removed
-     * @return the head node of the linked list after removing the nth node from the end.
-     *         If the head node itself is removed, returns the next node; otherwise returns the original head.
+     * @param n    the position from the end of the list (1-indexed) of the node to
+     *             be removed
+     * @return the head node of the linked list after removing the nth node from the
+     *         end.
+     *         If the head node itself is removed, returns the next node; otherwise
+     *         returns the original head.
      * 
-     * Time Complexity: O(L) where L is the length of the linked list
-     * Space Complexity: O(1) - only using pointers, no extra space
+     *         Time Complexity: O(L) where L is the length of the linked list
+     *         Space Complexity: O(1) - only using pointers, no extra space
      */
     public static Node removeNthFromEnd(Node head, int n) {
         Node slow = head, fast = head, prev = null;
@@ -202,6 +207,33 @@ public class LL {
         return head;
     }
 
+    /**
+     * Reverses a linked list in-place.
+     * 
+     * This method reverses the direction of all links in the linked list,
+     * making the last node the new head and the original head the new tail.
+     * The reversal is performed iteratively using three pointers to track
+     * the current, previous, and next nodes.
+     * 
+     * @param head the head node of the linked list to be reversed
+     * @return the new head of the reversed linked list, or null if the input is null
+     * 
+     * @time Complexity: O(n), where n is the number of nodes in the linked list
+     * @space Complexity: O(1), only uses a constant amount of extra space
+     */
+    public static Node reverseList(Node head) {
+        if (head == null || head.next == null)
+            return head;
+        Node curr = head, prev = null, next = null;
+        while (curr != null) {
+            next = curr.next;
+            curr.next = prev;
+            prev = curr;
+            curr = next;
+        }
+        return prev;
+    }
+
     public static void main(String[] args) {
         int[] arr = { 1, 2, 3, 4, 5 };
         // int[] arr2 = { 4, 5, 9, 9 };
@@ -209,8 +241,9 @@ public class LL {
         // Node head2 = convertArray2LL(arr2);
         // Node ans = segregate(head1);
         // Node head = segregateEvenOdd(ans);
-        Node ans = removeNthFromEnd(head, 2);
-        traverseLL(ans);
+        // Node ans = removeNthFromEnd(head, 2);
+        Node result = reverseList(head);
+        traverseLL(result);
         // System.out.println(llLength(ans));
     }
 }
