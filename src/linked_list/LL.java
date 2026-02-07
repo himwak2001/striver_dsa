@@ -216,7 +216,8 @@ public class LL {
      * the current, previous, and next nodes.
      * 
      * @param head the head node of the linked list to be reversed
-     * @return the new head of the reversed linked list, or null if the input is null
+     * @return the new head of the reversed linked list, or null if the input is
+     *         null
      * 
      * @time Complexity: O(n), where n is the number of nodes in the linked list
      * @space Complexity: O(1), only uses a constant amount of extra space
@@ -234,16 +235,130 @@ public class LL {
         return prev;
     }
 
+    /**
+     * Checks whether a linked list is a palindrome.
+     * 
+     * This method uses the two-pointer (tortoise and hare) approach to find the
+     * middle
+     * of the linked list, reverses the second half, and then compares both halves
+     * to
+     * determine if the list reads the same forwards and backwards.
+     * 
+     * Time Complexity: O(n) where n is the number of nodes in the linked list
+     * Space Complexity: O(1) as only pointers are used (excluding recursion stack
+     * if any)
+     * 
+     * @param head the head node of the linked list to check
+     * @return true if the linked list is a palindrome, false otherwise
+     * @note The linked list is restored to its original state after the check
+     */
+    public static boolean isPalindrome(Node head) {
+        if (head == null || head.next == null)
+            return true;
+
+        Node slow = head, fast = head;
+        while (fast != null && fast.next != null) {
+            slow = slow.next;
+            fast = fast.next.next;
+        }
+
+        Node newHead = reverseList(slow);
+        Node temp1 = head, temp2 = newHead;
+        while (temp2 != null) {
+            if (temp1.data != temp2.data) {
+                reverseList(newHead);
+                return false;
+            }
+            temp1 = temp1.next;
+            temp2 = temp2.next;
+        }
+
+        reverseList(newHead);
+        return true;
+    }
+
+    /**
+     * Helper method to increment a number represented as a linked list by 1.
+     * This method recursively traverses to the end of the linked list, then adds
+     * the carry
+     * value back through each node while incrementing the data.
+     *
+     * @param temp the current node being processed in the linked list
+     * @return the carry value to be added to the previous node (0 or 1)
+     */
+    private static int helper(Node temp) {
+        if (temp == null) {
+            return 1;
+        }
+
+        int carry = helper(temp.next);
+        int sum = temp.data + carry;
+        temp.data = sum % 10;
+        return sum / 10;
+    }
+
+    /**
+     * Adds one to the number represented by the linked list.
+     * 
+     * @param head the head node of the linked list representing a number
+     * @return the head node of the modified linked list with one added to it.
+     *         If a carry is generated at the most significant digit, a new node
+     *         is created and prepended to the list.
+     */
+    public static Node addOne(Node head) {
+        int carry = helper(head);
+        if (carry > 0) {
+            Node newNode = new Node(carry);
+            newNode.next = head;
+            return newNode;
+        }
+        return head;
+    }
+
+    /**
+     * Finds the intersection point of two linked lists.
+     * 
+     * This method uses the two-pointer technique to find the node where two linked lists
+     * intersect. It works by traversing both lists alternately - when a pointer reaches the
+     * end of one list, it starts from the beginning of the other list. If the lists intersect,
+     * both pointers will eventually meet at the intersection node. If they don't intersect,
+     * both pointers will reach null simultaneously.
+     * 
+     * Time Complexity: O(m + n) where m and n are the lengths of the two lists
+     * Space Complexity: O(1) - only uses two pointers
+     * 
+     * @param head1 the head node of the first linked list
+     * @param head2 the head node of the second linked list
+     * @return the intersection node if the lists intersect, null otherwise
+     */
+    public static Node intersectPoint(Node head1, Node head2) {
+        if (head1 == null || head2 == null)
+            return null;
+
+        Node t1 = head1;
+        Node t2 = head2;
+
+        while (t1 != t2) {
+            t1 = (t1 == null) ? head2 : t1.next;
+            t2 = (t2 == null) ? head1 : t2.next;
+        }
+
+        return t1;
+    }
+
     public static void main(String[] args) {
-        int[] arr = { 1, 2, 3, 4, 5 };
-        // int[] arr2 = { 4, 5, 9, 9 };
+        int[] arr = { 4, 1, 8, 5 };
+        int[] arr2 = { 5, 6, 1, 8, 5 };
         Node head = convertArray2LL(arr);
-        // Node head2 = convertArray2LL(arr2);
+        Node head2 = convertArray2LL(arr2);
         // Node ans = segregate(head1);
         // Node head = segregateEvenOdd(ans);
         // Node ans = removeNthFromEnd(head, 2);
-        Node result = reverseList(head);
-        traverseLL(result);
+        // Node result = reverseList(head);
+        // Node result = addOne(head);
+        // traverseLL(result);
+        System.out.println(intersectPoint(head, head2).data);
         // System.out.println(llLength(ans));
+        // System.out.println(isPalindrome(head));
     }
 }
