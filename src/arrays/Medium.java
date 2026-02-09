@@ -197,6 +197,47 @@ public class Medium {
         return cnt;
     }
 
+    /**
+     * Finds all elements in the array that appear more than n/3 times.
+     * Uses the Boyer-Moore majority voting algorithm to identify potential candidates
+     * and then validate their frequencies in a second pass.
+     *
+     * @param nums the input integer array
+     * @return a list of elements that appear more than âŒŠ n/3 âŒ‹ times
+     */
+    public List<Integer> majorityElement(int[] nums) {
+        int el1 = Integer.MIN_VALUE, el2 = Integer.MIN_VALUE, cnt1 = 0, cnt2 = 0;
+        for (int num : nums) {
+            if (cnt1 == 0 && el2 != num) {
+                el1 = num;
+                cnt1 += 1;
+            } else if (cnt2 == 0 && el1 != num) {
+                el2 = num;
+                cnt2 += 1;
+            } else if (num == el1) {
+                cnt1 += 1;
+            } else if (num == el2) {
+                cnt2 += 1;
+            } else {
+                cnt1 -= 1;
+                cnt2 -= 1;
+            }
+        }
+
+        cnt1 = 0; cnt2 = 0;
+        for (int num : nums) {
+            if (num == el1) cnt1 += 1;
+            else if (num == el2) cnt2 += 1;
+        }
+
+        List<Integer> result = new ArrayList<>();
+        int threshold = nums.length / 3;
+        if (cnt1 > threshold) result.add(el1);
+        if (cnt2 > threshold) result.add(el2);
+
+        return result;
+    }
+
     public static void main(String[] args) {
         Medium medium = new Medium();
         int[] nums = {1, 2, 3, -3, 1, 1, 1, 4, 2, -3};
