@@ -238,6 +238,43 @@ public class Medium {
         return result;
     }
 
+    /**
+     * Finds the count of subarrays with XOR equal to k.
+     * 
+     * This method uses a prefix XOR approach with a HashMap to efficiently count
+     * all subarrays whose XOR result equals the target value k.
+     * 
+     * Algorithm:
+     * - Maintains a running XOR (xr) of elements from the start to current index
+     * - For each position, checks if (xr ^ k) exists in the map
+     * - If it exists, it means there are subarrays ending at current index with XOR = k
+     * - Stores frequency of each XOR value encountered so far
+     * 
+     * Time Complexity: O(n) where n is the length of the array
+     * Space Complexity: O(n) for the HashMap in worst case
+     * 
+     * @param arr the input array of integers
+     * @param k the target XOR value to find
+     * @return the count of subarrays with XOR equal to k
+     */
+    public long subarrayXor(int arr[], int k) {
+        Map<Integer, Integer> mpp = new HashMap<>();
+    	mpp.put(0, 1);
+    	int cnt = 0;
+    	int n = arr.length, xr = 0;
+    	for(int i=0; i<n; i++){
+    		xr = xr ^ arr[i];
+    		int remain = xr ^ k;
+    		if(mpp.containsKey(remain)){
+    			int count = mpp.get(remain);
+    			cnt += count;
+    		}
+    		
+    		mpp.put(xr, mpp.getOrDefault(xr, 0) + 1);
+    	}
+    	return cnt;
+    }
+
     public static void main(String[] args) {
         Medium medium = new Medium();
         int[] nums = {1, 2, 3, -3, 1, 1, 1, 4, 2, -3};
