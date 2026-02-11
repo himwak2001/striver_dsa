@@ -120,7 +120,8 @@ public class Medium {
                 maxi = sum;
             }
 
-            if (sum < 0) sum = 0;
+            if (sum < 0)
+                sum = 0;
         }
         return maxi;
     }
@@ -199,7 +200,8 @@ public class Medium {
 
     /**
      * Finds all elements in the array that appear more than n/3 times.
-     * Uses the Boyer-Moore majority voting algorithm to identify potential candidates
+     * Uses the Boyer-Moore majority voting algorithm to identify potential
+     * candidates
      * and then validate their frequencies in a second pass.
      *
      * @param nums the input integer array
@@ -224,16 +226,21 @@ public class Medium {
             }
         }
 
-        cnt1 = 0; cnt2 = 0;
+        cnt1 = 0;
+        cnt2 = 0;
         for (int num : nums) {
-            if (num == el1) cnt1 += 1;
-            else if (num == el2) cnt2 += 1;
+            if (num == el1)
+                cnt1 += 1;
+            else if (num == el2)
+                cnt2 += 1;
         }
 
         List<Integer> result = new ArrayList<>();
         int threshold = nums.length / 3;
-        if (cnt1 > threshold) result.add(el1);
-        if (cnt2 > threshold) result.add(el2);
+        if (cnt1 > threshold)
+            result.add(el1);
+        if (cnt2 > threshold)
+            result.add(el2);
 
         return result;
     }
@@ -247,48 +254,85 @@ public class Medium {
      * Algorithm:
      * - Maintains a running XOR (xr) of elements from the start to current index
      * - For each position, checks if (xr ^ k) exists in the map
-     * - If it exists, it means there are subarrays ending at current index with XOR = k
+     * - If it exists, it means there are subarrays ending at current index with XOR
+     * = k
      * - Stores frequency of each XOR value encountered so far
      * 
      * Time Complexity: O(n) where n is the length of the array
      * Space Complexity: O(n) for the HashMap in worst case
      * 
      * @param arr the input array of integers
-     * @param k the target XOR value to find
+     * @param k   the target XOR value to find
      * @return the count of subarrays with XOR equal to k
      */
     public long subarrayXor(int arr[], int k) {
         Map<Integer, Integer> mpp = new HashMap<>();
-    	mpp.put(0, 1);
-    	int cnt = 0;
-    	int n = arr.length, xr = 0;
-    	for(int i=0; i<n; i++){
-    		xr = xr ^ arr[i];
-    		int remain = xr ^ k;
-    		if(mpp.containsKey(remain)){
-    			int count = mpp.get(remain);
-    			cnt += count;
-    		}
-    		
-    		mpp.put(xr, mpp.getOrDefault(xr, 0) + 1);
-    	}
-    	return cnt;
+        mpp.put(0, 1);
+        int cnt = 0;
+        int n = arr.length, xr = 0;
+        for (int i = 0; i < n; i++) {
+            xr = xr ^ arr[i];
+            int remain = xr ^ k;
+            if (mpp.containsKey(remain)) {
+                int count = mpp.get(remain);
+                cnt += count;
+            }
+
+            mpp.put(xr, mpp.getOrDefault(xr, 0) + 1);
+        }
+        return cnt;
+    }
+
+    /**
+     * Merges overlapping intervals from the given array of intervals.
+     * 
+     * @param arr a 2D array where each row represents an interval [start, end]
+     * @return an ArrayList of merged intervals, where overlapping intervals are combined
+     *         into a single interval with the minimum start and maximum end values
+     * 
+     * @example
+     *    Input: {{1,3},{2,6},{8,10},{15,18}}
+     *    Output: {{1,6},{8,10},{15,18}}
+     * 
+     * @note The method sorts the input array by start values before merging,
+     *       so the output intervals are in sorted order by their start position.
+     *       Time Complexity: O(n log n) due to sorting
+     *       Space Complexity: O(n) for the result list
+     */
+    public ArrayList<int[]> mergeOverlap(int[][] arr) {
+        ArrayList<int[]> ans = new ArrayList<>();
+        Arrays.sort(arr, (a, b) -> Integer.compare(a[0], b[0]));
+        int n = arr.length;
+        for (int[] num : arr) {
+            if (ans.isEmpty() || ans.get(ans.size() - 1)[1] < num[0]) {
+                ans.add(new int[] { num[0], num[1] });
+            } else {
+                ans.get(ans.size() - 1)[1] = Math.max(num[1], ans.get(ans.size() - 1)[1]);
+            }
+        }
+        return ans;
     }
 
     public static void main(String[] args) {
         Medium medium = new Medium();
-        int[] nums = {1, 2, 3, -3, 1, 1, 1, 4, 2, -3};
-//        System.out.println(medium.maxSubArray(nums));
+        // int[] nums = {1, 2, 3, -3, 1, 1, 1, 4, 2, -3};
+        int[][] arr = { { 1, 3 }, { 2, 4 }, { 6, 8 }, { 9, 10 } };
+        // System.out.println(medium.maxSubArray(nums));
         // medium.nextPermutation(nums);
-//        medium.sort012(nums);
-//        for (int num : medium.rearrangeArray(nums)) {
-//            System.out.print(num + " ");
-//        }
-//        System.out.println(medium.longestConsecutive(nums));
-        System.out.println(medium.subarraySum(nums, 3));
-//        List<List<Integer>> output = medium.threeSum(arr);
-//        for (List<Integer> triplet : output) {
-//            System.out.println(triplet);
-//        }
+        // medium.sort012(nums);
+        // for (int num : medium.rearrangeArray(nums)) {
+        // System.out.print(num + " ");
+        // }
+        // System.out.println(medium.longestConsecutive(nums));
+        // System.out.println(medium.subarraySum(nums, 3));
+        // List<List<Integer>> output = medium.threeSum(arr);
+        // for (List<Integer> triplet : output) {
+        // System.out.println(triplet);
+        // }
+        ArrayList<int[]> list = medium.mergeOverlap(arr);
+
+        for (int[] num : list) {
+            System.out.println(Arrays.toString(num));
+        }
     }
 }
