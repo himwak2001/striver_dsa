@@ -318,10 +318,14 @@ public class LL {
     /**
      * Finds the intersection point of two linked lists.
      * 
-     * This method uses the two-pointer technique to find the node where two linked lists
-     * intersect. It works by traversing both lists alternately - when a pointer reaches the
-     * end of one list, it starts from the beginning of the other list. If the lists intersect,
-     * both pointers will eventually meet at the intersection node. If they don't intersect,
+     * This method uses the two-pointer technique to find the node where two linked
+     * lists
+     * intersect. It works by traversing both lists alternately - when a pointer
+     * reaches the
+     * end of one list, it starts from the beginning of the other list. If the lists
+     * intersect,
+     * both pointers will eventually meet at the intersection node. If they don't
+     * intersect,
      * both pointers will reach null simultaneously.
      * 
      * Time Complexity: O(m + n) where m and n are the lengths of the two lists
@@ -346,19 +350,92 @@ public class LL {
         return t1;
     }
 
+    /**
+     * Deletes the middle node of a linked list.
+     * 
+     * Uses the slow and fast pointer technique to find the middle node.
+     * The slow pointer moves one step at a time while the fast pointer moves two
+     * steps.
+     * When the fast pointer reaches the end, the slow pointer will be at the middle
+     * node.
+     * 
+     * @param head the head node of the linked list
+     * @return the head of the linked list after removing the middle node,
+     *         or null if the list is empty or has only one node
+     * 
+     *         Time Complexity: O(n) where n is the number of nodes in the linked
+     *         list
+     *         Space Complexity: O(1) as only constant extra space is used
+     */
+    public static Node deleteMid(Node head) {
+        if (head == null || head.next == null)
+            return null;
+        Node slow = head, fast = head;
+        fast = fast.next.next;
+
+        while (fast != null && fast.next != null) {
+            slow = slow.next;
+            fast = fast.next.next;
+        }
+
+        slow.next = slow.next.next;
+        return head;
+    }
+
+    /**
+     * Detects the start node of a cycle in a linked list using Floyd's Cycle Detection Algorithm.
+     * 
+     * This method uses two pointers (slow and fast) to identify if a cycle exists in the linked list.
+     * If a cycle is detected, it finds and returns the node where the cycle begins.
+     * 
+     * Algorithm:
+     * 1. Use slow pointer (moves 1 step) and fast pointer (moves 2 steps)
+     * 2. If they meet, a cycle exists
+     * 3. Reset slow to head and move both pointers 1 step at a time
+     * 4. The point where they meet again is the cycle start node
+     * 
+     * Time Complexity: O(n) where n is the number of nodes
+     * Space Complexity: O(1)
+     * 
+     * @param head the head node of the linked list
+     * @return the node where the cycle begins, or null if no cycle exists
+     */
+    public static Node detectCycle(ListNode head) {
+        if (head == null || head.next == null)
+            return null;
+        Node slow = head, fast = head;
+        while (fast != null && fast.next != null) {
+            slow = slow.next;
+            fast = fast.next.next;
+
+            if (fast == slow) {
+                slow = head;
+                while (slow != fast) {
+                    slow = slow.next;
+                    fast = fast.next;
+                }
+                return slow;
+            }
+        }
+
+        return null;
+    }
+
     public static void main(String[] args) {
         int[] arr = { 4, 1, 8, 5 };
-        int[] arr2 = { 5, 6, 1, 8, 5 };
+        // int[] arr = { 5, 6, 1, 8, 5 };
         Node head = convertArray2LL(arr);
-        Node head2 = convertArray2LL(arr2);
+        // Node head2 = convertArray2LL(arr2);
         // Node ans = segregate(head1);
         // Node head = segregateEvenOdd(ans);
         // Node ans = removeNthFromEnd(head, 2);
         // Node result = reverseList(head);
         // Node result = addOne(head);
         // traverseLL(result);
-        System.out.println(intersectPoint(head, head2).data);
+        // System.out.println(intersectPoint(head, head2).data);
         // System.out.println(llLength(ans));
         // System.out.println(isPalindrome(head));
+        Node newHead = deleteMid(head);
+        traverseLL(newHead);
     }
 }
