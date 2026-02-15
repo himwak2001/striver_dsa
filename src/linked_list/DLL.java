@@ -282,7 +282,7 @@ public class DLL {
      * Deletes all occurrences of a specified value from a doubly linked list.
      * 
      * @param head the head node of the doubly linked list
-     * @param k the value to be deleted from the list
+     * @param k    the value to be deleted from the list
      * @return the head node of the modified doubly linked list after deletion,
      *         or null if the list becomes empty
      */
@@ -305,6 +305,101 @@ public class DLL {
             } else {
                 temp = temp.next;
             }
+        }
+        return head;
+    }
+
+    /**
+     * Retrieves the last node in a doubly linked list.
+     *
+     * @param head the head node of the linked list
+     * @return the last node in the linked list, or null if the list is empty
+     */
+    private static Node getLastNode(Node head) {
+        if (head == null || head.next == null)
+            return head;
+
+        Node lastNode = head;
+        while (lastNode.next != null) {
+            lastNode = lastNode.next;
+        }
+        return lastNode;
+    }
+
+    /**
+     * Finds all pairs of nodes in a doubly linked list whose values sum to a target
+     * value.
+     * Uses a two-pointer approach with one pointer at the head and one at the tail.
+     *
+     * @param target the target sum value
+     * @param head   the head node of the doubly linked list
+     * @return an ArrayList of ArrayList<Integer> where each inner list contains a
+     *         pair of values
+     *         that sum to the target value; pairs are found in order from outside
+     *         to inside
+     *
+     * @throws NullPointerException if head is null (handled by returning null)
+     *
+     *                              Time Complexity: O(n) where n is the number of
+     *                              nodes in the linked list
+     *                              Space Complexity: O(k) where k is the number of
+     *                              pairs found
+     */
+    public static ArrayList<ArrayList<Integer>> findPairsWithGivenSum(int target, Node head) {
+        if (head == null || head.next == null)
+            return head;
+
+        ArrayList<ArrayList<Integer>> result = new ArrayList<>();
+        Node left = head, right = getLastNode(head);
+        while (left.data < right.data) {
+            sum = left.data + right.data;
+            if (sum == target) {
+                result.add(new ArrayList<>(List.of(left.data, right.data)));
+                left = left.next;
+                right = right.prev;
+            } else if (sum > target) {
+                right = right.prev;
+            } else {
+                left = left.next;
+            }
+        }
+        return result;
+    }
+
+    /**
+     * Removes all duplicate consecutive nodes from a doubly linked list.
+     * 
+     * This method traverses the doubly linked list and eliminates nodes that have
+     * the same data value as the previous node. It maintains the bidirectional links
+     * (next and prev pointers) of the remaining nodes.
+     * 
+     * @param head the head node of the doubly linked list
+     * @return the head node of the modified doubly linked list with duplicates removed
+     * @throws NullPointerException if the linked list is not properly initialized
+     * 
+     * @example
+     * Input: 1 -> 1 -> 2 -> 2 -> 2 -> 3
+     * Output: 1 -> 2 -> 3
+     * 
+     * Time Complexity: O(n), where n is the number of nodes in the list
+     * Space Complexity: O(1), only using constant extra space
+     */
+    public static Node removeDuplicates(Node head) {
+        if (head == null || head.next == null)
+            return head;
+        Node temp = head;
+        while (temp != null && temp.next != null) {
+            Node nextNode = temp.next;
+            while (nextNode != null && nextNode.data == temp.data) {
+                nextNode = nextNode.next;
+            }
+
+            temp.next = nextNode;
+
+            if (nextNode != null)
+                nextNode.prev = temp;
+
+            temp = nextNode;
         }
         return head;
     }
